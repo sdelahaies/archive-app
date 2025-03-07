@@ -22,7 +22,7 @@ export async function POST(req) {
     const base64Image = file.image_data
     ? file.image_data.toString("base64")
     : null;
-
+    // console.log(file.filename,file.id_line,file.text)
     // Send the response with the Base64-encoded image
     return NextResponse.json({
         _id: file._id,

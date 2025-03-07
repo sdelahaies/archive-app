@@ -2,11 +2,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./globals2.css";
 
-const Viewer = ({ data }) => {
+const Viewer = ({ data, onDataUpdate }) => {
     const { filename, image, lines } = data;
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [imageSize, setImageSize] = useState({ width: 1561, height: 2479 });
     const svgRef = useRef(null);
+    // const [refreshCount, setRefreshCount] = useState(0);
 
     const [popupData, setPopupData] = useState(null);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -19,9 +20,8 @@ const Viewer = ({ data }) => {
     const handleMouseOut = () => setHoveredIndex(null);
 
     // Fetch cropped image and text for the selected polygon
-    const handlePolygonClick = async (line, index) => {
+    const handlePolygonClick = async (line) => {
         try {
-            // console.log('data', data)
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/getLine`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -33,7 +33,6 @@ const Viewer = ({ data }) => {
 
             if (response.ok) {
                 const data = await response.json();
-                // console.log(data)
                 setPopupData(data);
                 setIsPopupVisible(true);
                 setCurrentLineIndex(line.id_line);  // Set current line index
@@ -55,19 +54,28 @@ const Viewer = ({ data }) => {
         setCurrentLineIndex(null);
     };
 
-    // Navigate to previous or next line
+    // // Navigate to previous or next line
+    // const handleNavigation = (direction) => {
+    //     const newIndex = currentLineIndex + direction;
+    //     if (newIndex >= 0 && newIndex < lines.length) {
+    //         handlePolygonClick(lines[newIndex]);
+    //     }
+    // };
+
     const handleNavigation = (direction) => {
-        const newIndex = currentLineIndex + direction;
-        console.log(newIndex, currentLineIndex, direction)
+        const currentIndex = lines.findIndex(line => line.id_line === currentLineIndex);
+        const newIndex = currentIndex + direction;
+        
         if (newIndex >= 0 && newIndex < lines.length) {
-            handlePolygonClick(lines[newIndex], newIndex);
+            handlePolygonClick(lines[newIndex]);
         }
     };
+    
 
     // rewrite the auth using proper methods ...
     const isUserAuthorized = () => {
         const token = localStorage.getItem("token");
-        console.log(token)
+        // console.log(token)
         if (!token) return false;
 
         const payload = JSON.parse(atob(token.split(".")[1]));
@@ -102,9 +110,10 @@ const Viewer = ({ data }) => {
 
             alert("Line deleted successfully!");
             handleClosePopup();  // Close popup if successful
-
+            // setRefreshCount(prev => prev + 1);
             // Trigger a custom event to refresh the Viewer component
             window.dispatchEvent(new Event("text-saved"));
+            onDataUpdate(); 
         } catch (error) {
             console.error("Error deleting line:", error);
             alert("Failed to delete line. Please try again.");
@@ -114,6 +123,7 @@ const Viewer = ({ data }) => {
     // Save edited text to database
     const handleSaveEdit = async () => {
         try {
+            
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/updateSample`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -123,14 +133,6 @@ const Viewer = ({ data }) => {
                     newText: editedText
                 }),
             });
-
-            if (response.ok) {
-                console.log("Text updated successfully!");
-                await handlePolygonClick(lines[currentLineIndex], currentLineIndex);  // Refresh data
-                setIsEditing(false);
-            } else {
-                console.error("Failed to update text:", response.statusText);
-            }
 
             // Update text in "inventaireMalte" collection
             const responseInventaire = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/updateInventaire`, {
@@ -143,12 +145,20 @@ const Viewer = ({ data }) => {
                 }),
             });
 
-            if (responseInventaire.ok) {
-                console.log("Text updated successfully in inventaireMalte!");
-                await handlePolygonClick(lines[currentLineIndex], currentLineIndex);  // Refresh data
+            if (response.ok && responseInventaire.ok) {
+                console.log("Text updated successfully in database!");
+
+                 // Find the zero-based index of the current line
+                // const currentIndex = lines.findIndex(line => line.id_line === currentLineIndex);
+                
+                // await handlePolygonClick(lines[currentIndex]);  // Refresh data
+                handleClosePopup();
+                onDataUpdate(); 
                 setIsEditing(false);
+                // setRefreshCount(prev => prev + 1);  // Trigger data refresh
+                // await handleNavigation(0);  // Refresh data
             } else {
-                console.error("Failed to update text in inventaireMalte:", responseInventaire.statusText);
+                console.error("Failed to update text in database:", [response.statusText,responseInventaire.statusText] );
             }
 
 
@@ -173,7 +183,7 @@ const Viewer = ({ data }) => {
                     {image && (
                         <svg ref={svgRef} className="svg-image max-h-full" viewBox={`0 0 ${imageSize.width} ${imageSize.height}`} xmlns="http://www.w3.org/2000/svg">
                             <image href={image} height="100%" width="100%" />
-                            {lines.map((line, index) => (
+                            {lines.map((line,index) => (
                                 <polygon
                                     key={index}
                                     className={`textline ${hoveredIndex === index ? "highlighted" : ""}`}
@@ -187,7 +197,7 @@ const Viewer = ({ data }) => {
                     )}
                 </div>
                 <div className="w-1/2 transcription" style={{ marginTop: '20px', marginLeft: '20px' }}>
-                    {lines.map((line, index) => (
+                    {lines.map((line,index) => (
                         <span
                             key={index}
                             className={`block my-2 ${hoveredIndex === index ? "highlighted" : ""}`}

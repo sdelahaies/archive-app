@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'MongoDB Archives',
-  description: 'Displaying files from MongoDB',
+  title: 'Archive Explorer',
+  description: 'Display and Edit Archive Transcriptions',
 };
 
 export default function RootLayout({ children }) {

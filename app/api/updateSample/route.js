@@ -5,10 +5,11 @@ import { NextResponse } from 'next/server';
 export async function POST(req) {
     try {
         const { filename, id_line, newText } = await req.json();
+        // console.log(filename,id_line,newText)
         if (!filename || !id_line || !newText) {
             return NextResponse.json({ error: "Missing required fields in the request body" }, { status: 400 });
         }
-        const { db } = await connectToDatabase();
+        await connectToDatabase();
         const result = await Sample.updateOne(
             { filename, id_line },
             { $set: { text: newText } }

@@ -8,7 +8,7 @@ const HomePage = () => {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [viewerData, setViewerData] = useState(null);
-
+  
   // Fetch filenames only on mount
   useEffect(() => {
     const fetchFilenames = async () => {
@@ -81,7 +81,9 @@ const HomePage = () => {
       {/* Main content area */}
       <div className="w-4/5 bg-black-50 flex justify-center items-center overflow-y-auto">
         {viewerData ? (
-          <Viewer data={viewerData} />
+          // <Viewer data={viewerData} />
+          <Viewer data={viewerData} onDataUpdate={() => handleFileSelect(viewerData.filename)} />
+
         ) : (
           <p className="text-center text-gray-500">Select a file to view</p>
         )}
