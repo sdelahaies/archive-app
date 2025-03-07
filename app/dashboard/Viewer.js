@@ -65,12 +65,12 @@ const Viewer = ({ data, onDataUpdate }) => {
     const handleNavigation = (direction) => {
         const currentIndex = lines.findIndex(line => line.id_line === currentLineIndex);
         const newIndex = currentIndex + direction;
-        
+
         if (newIndex >= 0 && newIndex < lines.length) {
             handlePolygonClick(lines[newIndex]);
         }
     };
-    
+
 
     // rewrite the auth using proper methods ...
     const isUserAuthorized = () => {
@@ -113,7 +113,7 @@ const Viewer = ({ data, onDataUpdate }) => {
             // setRefreshCount(prev => prev + 1);
             // Trigger a custom event to refresh the Viewer component
             window.dispatchEvent(new Event("text-saved"));
-            onDataUpdate(); 
+            onDataUpdate();
         } catch (error) {
             console.error("Error deleting line:", error);
             alert("Failed to delete line. Please try again.");
@@ -123,7 +123,7 @@ const Viewer = ({ data, onDataUpdate }) => {
     // Save edited text to database
     const handleSaveEdit = async () => {
         try {
-            
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/updateSample`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -148,17 +148,17 @@ const Viewer = ({ data, onDataUpdate }) => {
             if (response.ok && responseInventaire.ok) {
                 console.log("Text updated successfully in database!");
 
-                 // Find the zero-based index of the current line
+                // Find the zero-based index of the current line
                 // const currentIndex = lines.findIndex(line => line.id_line === currentLineIndex);
-                
+
                 // await handlePolygonClick(lines[currentIndex]);  // Refresh data
                 handleClosePopup();
-                onDataUpdate(); 
+                onDataUpdate();
                 setIsEditing(false);
                 // setRefreshCount(prev => prev + 1);  // Trigger data refresh
                 // await handleNavigation(0);  // Refresh data
             } else {
-                console.error("Failed to update text in database:", [response.statusText,responseInventaire.statusText] );
+                console.error("Failed to update text in database:", [response.statusText, responseInventaire.statusText]);
             }
 
 
@@ -183,12 +183,12 @@ const Viewer = ({ data, onDataUpdate }) => {
                     {image && (
                         <svg ref={svgRef} className="svg-image max-h-full" viewBox={`0 0 ${imageSize.width} ${imageSize.height}`} xmlns="http://www.w3.org/2000/svg">
                             <image href={image} height="100%" width="100%" />
-                            {lines.map((line,index) => (
+                            {lines.map((line, index) => (
                                 <polygon
                                     key={index}
                                     className={`textline ${hoveredIndex === index ? "highlighted" : ""}`}
                                     points={line.polygon}
-                                    onMouseOver={() => handleMouseOver(index)}ct windo
+                                    onMouseOver={() => handleMouseOver(index)} ct windo
                                     onMouseOut={handleMouseOut}
                                     onClick={() => handlePolygonClick(line)}  // Fetch data on click
                                 />
@@ -197,7 +197,7 @@ const Viewer = ({ data, onDataUpdate }) => {
                     )}
                 </div>
                 <div className="w-1/2 transcription" style={{ marginTop: '20px', marginLeft: '20px' }}>
-                    {lines.map((line,index) => (
+                    {lines.map((line, index) => (
                         <span
                             key={index}
                             className={`block my-2 ${hoveredIndex === index ? "highlighted" : ""}`}
@@ -240,7 +240,7 @@ const Viewer = ({ data, onDataUpdate }) => {
                                 ▶
                             </button>
 
-                            {isUserAuthorized() &&(
+                            {isUserAuthorized() && (
                                 <div className="flex justify-end space-x-2">
                                     <button
                                         onClick={() => setIsEditing(true)}
