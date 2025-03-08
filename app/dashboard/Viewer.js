@@ -76,10 +76,17 @@ const Viewer = ({ data, onDataUpdate }) => {
     const isUserAuthorized = () => {
         const token = localStorage.getItem("token");
         // console.log(token)
-        if (!token) return false;
-
+        if (!token) {
+          return false;
+        }
         const payload = JSON.parse(atob(token.split(".")[1]));
-        const role = localStorage.getItem("role");
+        console.log(payload)
+        
+        const parts = payload.argument.split('.');
+        const role = parts[parts.length - 1];
+
+        console.log(role === "admin")
+        // const role = localStorage.getItem("role");
         return role === "admin";
     };
 

@@ -11,7 +11,7 @@ const LoginPage = () => {
     // Clear localStorage when the component mounts
     useEffect(() => {
         localStorage.removeItem("token");
-        localStorage.removeItem("role");
+        // localStorage.removeItem("role");
     }, []);
 
 
@@ -27,7 +27,7 @@ const LoginPage = () => {
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem("token", data.token);
-                localStorage.setItem("role", "admin");
+                // localStorage.setItem("role", "admin");
                 router.push("/dashboard");  // Redirect to homepage
             } else {
                 setError(data.message);
@@ -39,7 +39,7 @@ const LoginPage = () => {
     };
 
     const handleVisitorAccess = () => {
-        localStorage.setItem("role", "visitor");
+        // localStorage.setItem("role", "visitor");
         router.push("/visitor");  // Redirect to homepage
     };
 
