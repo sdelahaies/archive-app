@@ -27,7 +27,7 @@ export default function Home() {
             <a href="/login"className="hover:underline">Log out</a>
           )} */}
           <a href="/visitor" className="hover:underline">Home</a>
-          <a href="/login" className="hover:underline">Log out</a>
+          <a href="/login" className="hover:underline">Log in</a>
           <a href="https://www.linkedin.com/company/commanderie-de-condat" >
             <Image
               aria-hidden

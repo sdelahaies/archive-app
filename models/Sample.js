@@ -6,6 +6,6 @@ const fileSchema = new mongoose.Schema({
   image_data: { type: Buffer, required: false},
   text: { type:String, required: false}
 
-}, { collection: 'samples' });  // 👈 Specify the collection name here
+}, { collection: 'samples-jpg' });  // 👈 Specify the collection name here
 
 export default mongoose.models.Sample || mongoose.model('Sample', fileSchema);

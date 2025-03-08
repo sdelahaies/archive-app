@@ -214,14 +214,14 @@ const Viewer = ({ data, onDataUpdate }) => {
                 <div className="popup-overlay">
                     {!isEditing ? (
                         <div className="bg-black rounded-lg shadow-lg p-6 max-w-4xl relative flex flex-col items-center border"
-                            style={{ backgroundColor: '#171616', minWidth: '50%' }}>
+                            style={{ minWidth: '50%' }}>
                             <button
                                 onClick={handleClosePopup}
                                 className="absolute top-2 right-2 text-gray-100 hover:text-red-300"
                             >✖</button>
                             <button
                                 onClick={() => handleNavigation(-1)}
-                                className="absolute left-1 top-30 text-gray-100 hover:text-red-300 z-70 "
+                                className="absolute left-1 top-22 text-gray-100 hover:text-red-300 z-70 "
                                 style={{ fontSize: '20px' }}
                             >
                                 ◀
@@ -229,12 +229,12 @@ const Viewer = ({ data, onDataUpdate }) => {
                             <img
                                 src={`data:image/png;base64,${popupData.image_data}`}
                                 alt="Cropped"
-                                className="mb-4 max-w-full max-h-96"
+                                className="mb-4 max-w-full max-h-96 w-full h-auto"
                             />
                             <p className="text-gray-100 text-center">{popupData.text}</p>
                             <button
                                 onClick={() => handleNavigation(1)}
-                                className="absolute right-1 top-30 text-gray-100 hover:text-red-300 z-70"
+                                className="absolute right-1 top-22 text-gray-100 hover:text-red-300 z-70"
                                 style={{ fontSize: '20px' }}
                             >
                                 ▶
@@ -254,11 +254,11 @@ const Viewer = ({ data, onDataUpdate }) => {
                             )}
                         </div>) : (
                         <div className="bg-black rounded-lg shadow-lg p-6 max-w-4xl relative flex flex-col items-center"
-                            style={{ backgroundColor: '#2c2929', minWidth: '50%' }}>
+                            style={{ minWidth: '50%' }}>
                             <img
                                 src={`data:image/png;base64,${popupData.image_data}`}
                                 alt="Cropped"
-                                className="mb-4 max-w-full max-h-96"
+                                className="mb-4 max-w-full max-h-96 w-full h-auto"
                             />
                             <textarea
                                 value={editedText}

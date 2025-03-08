@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Viewer from "@/app/dashboard/Viewer";
+import HomeBox from "./HomeBox";
 import "./globals2.css";
 
 const HomePage = () => {
@@ -69,7 +70,7 @@ const HomePage = () => {
                 onClick={() => handleFileSelect(file.filename)}
                 className={`block text-left py-2 px-4 rounded-md shadow-sm hover:bg-gray-700 transition text-base border border-gray-300
                   ${selectedFile === file.filename ? "bg-gray-500 text-white" : "bg-black text-gray-100"}`}
-                style={{ fontSize: '14px'}}
+                style={{ fontSize: '12px'}}
               >
                 {file.filename}
               </button>
@@ -85,7 +86,8 @@ const HomePage = () => {
           <Viewer data={viewerData} onDataUpdate={() => handleFileSelect(viewerData.filename)} />
 
         ) : (
-          <p className="text-center text-gray-500">Select a file to view</p>
+          <HomeBox/>
+          // <p className="text-center text-gray-500">Select a fucking file to view</p>
         )}
       </div>
     </div>

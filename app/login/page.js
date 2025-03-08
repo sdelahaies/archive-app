@@ -40,7 +40,7 @@ const LoginPage = () => {
 
     const handleVisitorAccess = () => {
         localStorage.setItem("role", "visitor");
-        router.push("/dashboard");  // Redirect to homepage
+        router.push("/visitor");  // Redirect to homepage
     };
 
     return (

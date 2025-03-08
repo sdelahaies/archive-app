@@ -6,6 +6,6 @@ const fileSchema = new mongoose.Schema({
   json_data: { type: Object, required: false},
   image_data: { type: Buffer, required: false},
 
-}, { collection: 'inventaire-malte' });  // 👈 Specify the collection name here
+}, { collection: 'inventaire-jpg' });  // 👈 Specify the collection name here
 
 export default mongoose.models.Archive || mongoose.model('Archive', fileSchema);
