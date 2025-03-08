@@ -1,12 +1,10 @@
 import jwt from "jsonwebtoken";
 
-// const SECRET_KEY = "commanderiecondatconfluencehostpitaliere";
-
 export async function POST(req) {
     const body = await req.json();
     // console.log(`${process.env.ADMIN_USERNAME}`)
     // console.log(`${process.env.ADMIN_PASSWORD}`)
-    // const { username, password } = body;
+    const { username, password } = body;
     // console.log(username, password)
     if (username === `${process.env.ADMIN_USERNAME}` && password === `${process.env.ADMIN_PASSWORD}`) {
         const argument = `${username}.admin`
